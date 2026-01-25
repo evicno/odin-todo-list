@@ -1,0 +1,254 @@
+@font-face {
+    font-family: 'Funnel Sans';
+    src: url('./fonts/FunnelSans-Light.woff2') format('woff2'),
+        url('./fonts/FunnelSans-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Funnel Sans';
+    src: url('./fonts/FunnelSans-LightItalic.woff2') format('woff2'),
+        url('./fonts/FunnelSans-LightItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Luckiest Guy';
+    src: url('./fonts/LuckiestGuy-Regular.woff2') format('woff2'),
+        url('./fonts/LuckiestGuy-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+
+
+/* 1. Use a more-intuitive box-sizing model */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+*:not(dialog) {
+  margin: 0;
+}
+
+/* 3. Enable keyword animations */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+
+body {
+  /* 4. Add accessible line-height */
+  line-height: 1.5;
+  /* 5. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 6. Improve media defaults */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 7. Inherit fonts for form controls */
+input, button, textarea, select {
+  font: inherit;
+}
+
+/* 8. Avoid text overflows */
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+/* 9. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+/*
+  10. Create a root stacking context
+*/
+#root, #__next {
+  isolation: isolate;
+}
+
+body {
+    height: 100vh;
+    width: 100wh;
+    font-family:'Funnel Sans';
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    height : 120px;
+    font-family: 'Luckiest Guy';
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    gap : 20px;
+    padding-left: 20px;
+    padding-top: 10px;
+    background-color: #3F9AAE;
+    z-index: 2;
+    box-shadow: 0px 8px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+header img {
+    height : 60px;
+    width: auto;
+}
+
+h1 {
+    padding-top: 15px;
+}
+
+.content {
+    display: flex;
+    flex: auto;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #91C6BC;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    font-size: 28px;
+}
+
+.main {
+    flex: auto;
+    background-color: #F6F3C2;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+}
+
+.projects ul {
+    padding-top: 16px;
+    list-style-type: none;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.projects li {
+    display: flex;
+    gap: 16px;
+
+}
+
+h3:hover {
+    font-size: 20px;
+}
+
+#current h3 {
+    background-color: #3F9AAE;
+    padding: 0 10px;
+    border-radius: 10px;
+
+}
+
+.tasks {
+    list-style-type: none;
+    display: flex;
+    gap: 20px;
+    padding: 0;
+}
+
+.task-item {
+    height: 140px;
+    width: 200px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 5px 7px 6px -1px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 25px 130px 25px;
+    grid-template-rows: 1fr 2fr 1fr;
+    align-items: center;
+}
+
+.task-item .img {
+    align-self: center;
+}
+
+.task-item h3 {
+    grid-column: 2 / 4;
+    padding-bottom: 2px;
+}
+
+.task-item p {
+    align-self: baseline;
+    grid-column: 1 / 4;
+    font-style: italic;
+    font-size: 14px;
+    padding-left: 8px;
+}
+
+.task-item div {
+    grid-column: 1 / 3;
+    padding-left: 8px;
+}
+
+.task-item button {
+    height: 20px;
+    width: 20px;
+    display: none;
+    align-self: center;
+    font-size: 12px;
+    border-radius: 50%;
+    border-width: 1px;
+    border-style: none;
+}
+
+.task-item:hover button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main .add {
+    display: flex;
+    background-color: #F96E5B;
+    border-radius: 10px;
+    border-style: none;
+    padding: 5px;
+    padding-right: 8px;
+    width: 125px;
+    align-self: center;
+}
+
+.sidebar .add {
+    margin-top: 20px;
+    display: flex;
+    background-color: #F96E5B;
+    border-radius: 10px;
+    border-style: none;
+    padding: 5px;
+    padding-right: 8px;
+    width: 150px;
+    align-self: center;
+}
+
+.add h2,
+.add h2 {
+    font-size: 20px;
+}
