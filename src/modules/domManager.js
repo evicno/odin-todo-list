@@ -47,15 +47,31 @@ export function renderLayout() {
     addButton(addProjectButton, "project");
     sidebar.appendChild(addProjectButton);
 
-    // Render main content (current project h2, empty tasks list and add button)
+    // Render main content
+
+    // Render current project h2
     const currentProject = document.createElement("h2");
     currentProject.classList.add("current");
     mainContent.appendChild(currentProject);
 
-    const tasks = document.createElement("ul");
+    // Create divs (high, medium, low) for task priority
+    const tasks = document.createElement("div");
     tasks.classList.add("tasks");
+
+    const taskHigh = document.createElement("ul");
+    taskHigh.classList.add("high");
+    tasks.appendChild(taskHigh);
+
+    const taskMedium = document.createElement("ul");
+    taskMedium.classList.add("medium");
+    tasks.appendChild(taskMedium);
+
+    const taskLow = document.createElement("ul");
+    taskLow.classList.add("low");
+    tasks.appendChild(taskLow);
     mainContent.appendChild(tasks);
 
+    // Add button to add task
     const addTaskButton = document.createElement("button");
     addTaskButton.classList.add("add");
     addTaskButton.id = "add-task";
@@ -83,10 +99,10 @@ export function renderLayout() {
 
         const description = document.getElementById("description").value;
         const dueDate = document.getElementById("due-date").value;
-        //const priority = document.getElementById("priority").value;
+        const priority = document.querySelector("input[name = 'priority']:checked").value;
         const newTask = todoManager.addTask(title, dueDate, project);
         newTask.setDescription(description);
-        // newTask.setPriority(priority);
+        newTask.setPriority(priority);
         renderTasks();
     })
 }
@@ -176,18 +192,30 @@ function setCurrentProject() {
 }
 
 function renderTasks() {
-    const tasks = document.querySelector(".tasks");
-    tasks.replaceChildren();
+    const taskHigh = document.querySelector(".high");
+    const taskMedium = document.querySelector(".medium");
+    const taskLow = document.querySelector(".low");
+    taskHigh.replaceChildren();
+    taskMedium.replaceChildren();
+    taskLow.replaceChildren();
 
     // Create task items
     const currentProjectTasks = todoManager.getCurrentProject().getTasks();
     for (const task of currentProjectTasks) {
-        tasks.appendChild(renderTaskItem(task));
+        classifyTaskByPriority(task);
     }
     
 }
 
-function renderTaskItem(task) {
+function classifyTaskByPriority(task) {
+    const priority = "." + task.getPriority();
+    console.log(priority);
+    const priorityDiv = document.querySelector(priority);
+    console.log(priorityDiv);
+    priorityDiv.appendChild(createTaskItem(task));
+}
+
+function createTaskItem(task) {
     const t = document.createElement("li");
     t.classList.add("task-item");
 

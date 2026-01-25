@@ -166,11 +166,11 @@ h3:hover {
 
 }
 
-.tasks {
-    list-style-type: none;
+.tasks ul {
     display: flex;
     gap: 20px;
-    padding: 0;
+    padding-bottom: 30px;
+    padding-left: 10px;
 }
 
 .task-item {
@@ -186,6 +186,17 @@ h3:hover {
     align-items: center;
 }
 
+.high li {
+    background-color: rgb(249, 110, 91, 0.7);
+}
+
+.medium li {
+    background-color: rgb(249, 110, 91, 0.4);
+}
+
+.low li {
+    background-color: rgb(249, 110, 91, 0.2);
+}
 .task-item .img {
     align-self: center;
 }
