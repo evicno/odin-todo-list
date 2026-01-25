@@ -54,21 +54,9 @@ export function renderLayout() {
     currentProject.classList.add("current");
     mainContent.appendChild(currentProject);
 
-    // Create divs (high, medium, low) for task priority
+    // Add tasks div
     const tasks = document.createElement("div");
     tasks.classList.add("tasks");
-
-    const taskHigh = document.createElement("ul");
-    taskHigh.classList.add("high");
-    tasks.appendChild(taskHigh);
-
-    const taskMedium = document.createElement("ul");
-    taskMedium.classList.add("medium");
-    tasks.appendChild(taskMedium);
-
-    const taskLow = document.createElement("ul");
-    taskLow.classList.add("low");
-    tasks.appendChild(taskLow);
     mainContent.appendChild(tasks);
 
     // Add button to add task
@@ -154,13 +142,8 @@ function renderProjects() {
         // Add event listeners to select or delete project
         p.addEventListener("click", () => {
             todoManager.setCurrentProjectById(project.getId());
-            console.log(todoManager.getCurrentProject().getId());
             setCurrentProject();
         });
-
-
-
-
     };
 
     setCurrentProject();
@@ -184,7 +167,6 @@ function setCurrentProject() {
         project.removeAttribute("id");
     });
     projectItems.forEach(project => {
-        console.log(project.dataset.id);
         if (project.dataset.id === currentProject.getId()) {
             project.id = "current";
         };
@@ -192,12 +174,20 @@ function setCurrentProject() {
 }
 
 function renderTasks() {
-    const taskHigh = document.querySelector(".high");
-    const taskMedium = document.querySelector(".medium");
-    const taskLow = document.querySelector(".low");
-    taskHigh.replaceChildren();
-    taskMedium.replaceChildren();
-    taskLow.replaceChildren();
+    const tasks = document.querySelector(".tasks");
+    tasks.replaceChildren();
+
+    const taskHigh = document.createElement("ul");
+    taskHigh.classList.add("high");
+    tasks.appendChild(taskHigh);
+
+    const taskMedium = document.createElement("ul");
+    taskMedium.classList.add("medium");
+    tasks.appendChild(taskMedium);
+
+    const taskLow = document.createElement("ul");
+    taskLow.classList.add("low");
+    tasks.appendChild(taskLow);
 
     // Create task items
     const currentProjectTasks = todoManager.getCurrentProject().getTasks();
@@ -209,9 +199,7 @@ function renderTasks() {
 
 function classifyTaskByPriority(task) {
     const priority = "." + task.getPriority();
-    console.log(priority);
     const priorityDiv = document.querySelector(priority);
-    console.log(priorityDiv);
     priorityDiv.appendChild(createTaskItem(task));
 }
 
@@ -243,6 +231,12 @@ function createTaskItem(task) {
     const deleteTaskButton = document.createElement("button");
     deleteTaskButton.textContent = "X";
     t.appendChild(deleteTaskButton);
+
+    // Event listener to delete task
+    deleteTaskButton.addEventListener("click", () => {
+        todoManager.deleteTask(task);
+        renderTasks();
+    })
 
     return t;
 }

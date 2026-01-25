@@ -186,6 +186,13 @@ h3:hover {
     align-items: center;
 }
 
+.tasks:empty,
+.high:empty,
+.medium:empty,
+.low:empty {
+    display: none;
+}
+
 .high li {
     background-color: rgb(249, 110, 91, 0.7);
 }

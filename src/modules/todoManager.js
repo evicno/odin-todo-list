@@ -36,7 +36,9 @@ export const todoManager =(() => {
 
     function deleteProject(project) {
         const index = projectList.indexOf(project);
-        projectList.splice(index, 1);
+        if (index != -1) {
+            projectList.splice(index, 1);
+        }
     }
 
     // Add task and add it to the project called (default: inbox)
@@ -46,6 +48,13 @@ export const todoManager =(() => {
         return newTask;
     }
 
+    function deleteTask(task) {
+        const index = currentProject.getTasks().indexOf(task);
+        if (index != -1) {
+            currentProject.getTasks().splice(index, 1);
+        }
+    }
+
     // Find project by id and return the object
     function findProjectById(id) {
         let projectFound = projectList.find((el) => {
@@ -53,22 +62,12 @@ export const todoManager =(() => {
         return projectFound;
     }
 
-    // Find task by id by looping through projects
-    function findTaskById(id) {
-        for (const project of projectList) {
-            let taskFound = project.getTasks().find((el) => {
-                return el.getId() == id });
-            if (taskFound) {
-                return taskFound ;
-            }
-        }
-    }
 
     return {
         getCurrentProject, setCurrentProjectById,
         addProject, addTask,
         getInbox, getProjectList,
-        deleteProject,
-        findProjectById, findTaskById,
+        deleteProject, deleteTask,
+        findProjectById
     }
 })();
