@@ -104,20 +104,47 @@ function renderProjects() {
     for (const project of projectListData) {
         const li = document.createElement("li");
         li.classList.add("project");
-        // if (project === todoManager.getCurrentProject()) {
-        //     li.id = "current";
-        // }
-
         li.dataset.id = project.getId();
+
+        // Add icon
         let listIcon = document.createElement("img");
         listIcon.src = (project.getId() === "inbox") ? inboxImg : projectImg;
         li.appendChild(listIcon);
 
+        // Add name of project
         const p = document.createElement("h3");
         p.textContent = project.getName();
         li.appendChild(p);
 
+        // Add delete button (except for inbox)
+        if (project.getId() != "inbox") {
+            const deleteProjectButton = document.createElement("button");
+            deleteProjectButton.textContent = "X";
+            li.appendChild(deleteProjectButton);
+
+            // add event listener 
+            deleteProjectButton.addEventListener("click", () => {
+            if (todoManager.getCurrentProject() === project) {
+                todoManager.setCurrentProjectById("inbox");
+                setCurrentProject();
+            }
+            todoManager.deleteProject(project);
+            renderProjects();
+            });
+        };
+
         projectList.appendChild(li);
+
+        // Add event listeners to select or delete project
+        p.addEventListener("click", () => {
+            todoManager.setCurrentProjectById(project.getId());
+            console.log(todoManager.getCurrentProject().getId());
+            setCurrentProject();
+        });
+
+
+
+
     };
 
     setCurrentProject();
@@ -131,6 +158,9 @@ function setCurrentProject() {
     // Add name of current project in main content
     const currentHeading = document.querySelector(".current");
     currentHeading.textContent = currentProject.getName();
+
+    // Render tasks of current project
+    renderTasks();
 
     // Set current id to the current project item in the project list
     const projectItems = document.querySelectorAll(".project");

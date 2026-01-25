@@ -120,7 +120,7 @@ h1 {
 }
 
 .sidebar {
-    width: 200px;
+    width: 300px;
     background-color: #91C6BC;
     padding: 10px;
     display: flex;
@@ -208,7 +208,8 @@ h3:hover {
     padding-left: 8px;
 }
 
-.task-item button {
+.task-item button,
+.project button {
     height: 20px;
     width: 20px;
     display: none;
@@ -219,7 +220,8 @@ h3:hover {
     border-style: none;
 }
 
-.task-item:hover button{
+.task-item:hover button,
+.project:hover button {
     display: flex;
     justify-content: center;
     align-items: center;

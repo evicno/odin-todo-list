@@ -4,10 +4,10 @@ import { project } from "./project.js";
 export const todoManager =(() => { 
     let projectList = [];
     const inbox = addProject("inbox");   
-    const currentProject = inbox;
+    let currentProject = inbox;
 
     function initApp() {
-        
+
     }
 
     const getCurrentProject = () => {
@@ -15,7 +15,7 @@ export const todoManager =(() => {
     }
 
     const setCurrentProjectById = (id) => {
-        return findProjectById(id);
+        currentProject = findProjectById(id);
     }
 
     // Create a project and add it to projectList
@@ -32,6 +32,11 @@ export const todoManager =(() => {
 
     function getProjectList() {
         return projectList;
+    }
+
+    function deleteProject(project) {
+        const index = projectList.indexOf(project);
+        projectList.splice(index, 1);
     }
 
     // Add task and add it to the project called (default: inbox)
@@ -63,6 +68,7 @@ export const todoManager =(() => {
         getCurrentProject, setCurrentProjectById,
         addProject, addTask,
         getInbox, getProjectList,
+        deleteProject,
         findProjectById, findTaskById,
     }
 })();
