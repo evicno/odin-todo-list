@@ -1,9 +1,11 @@
 
-function task(title, dueDate) {
-    let description = "";
-    let priority = "low";
-    let check = false;
-    const id = crypto.randomUUID();
+function task({ title, 
+                dueDate, 
+                project = "inbox",
+                description = "", 
+                priority = "low", 
+                check = false,
+                id = crypto.randomUUID() }) {
 
     const getTitle = () => {
         return title;
@@ -33,15 +35,6 @@ function task(title, dueDate) {
         return priority;
     }
 
-    const setPriority = (newPriority) => {
-        const priorities = ["high", "medium", "low"];
-        if (priorities.includes(newPriority)) {
-            priority = newPriority;
-        }
-        else return;
-        
-    }
-
     const getCheck = () => {
         return check;
     }
@@ -54,11 +47,16 @@ function task(title, dueDate) {
         return id;
     }
 
+    const getProject = () => {
+        return project;
+    }
+
     return {
         getTitle, setTitle,
         getDescription, setDescription,
         getDueDate, setDueDate,
-        getPriority, setPriority,
+        getPriority,
+        getProject,
         getCheck, switchCheck,
         getId
     }

@@ -88,9 +88,14 @@ export function renderLayout() {
         const description = document.getElementById("description").value;
         const dueDate = document.getElementById("due-date").value;
         const priority = document.querySelector("input[name = 'priority']:checked").value;
-        const newTask = todoManager.addTask(title, dueDate, project);
-        newTask.setDescription(description);
-        newTask.setPriority(priority);
+        const newTask = {
+            title,
+            description,
+            dueDate,
+            project,
+            priority
+        }
+        todoManager.addTask(newTask);
         renderTasks();
     })
 }
@@ -210,6 +215,7 @@ function createTaskItem(task) {
     // Check box
     const checkBox = document.createElement("img");
     checkBox.src = task.getCheck() ? checkedBoxImg : checkBoxImg;
+    t.dataset.active = task.getCheck() ? false : true;
     t.appendChild(checkBox);
 
     // Title of the task
@@ -232,7 +238,14 @@ function createTaskItem(task) {
     deleteTaskButton.textContent = "X";
     t.appendChild(deleteTaskButton);
 
-    // Event listener to delete task
+    // Event listeners to check/uncheck and delete task
+    checkBox.addEventListener("click", () => {
+        task.switchCheck();
+        checkBox.src = task.getCheck() ? checkedBoxImg : checkBoxImg;
+        t.dataset.active = task.getCheck() ? false : true;
+        renderTasks();
+    })
+
     deleteTaskButton.addEventListener("click", () => {
         todoManager.deleteTask(task);
         renderTasks();

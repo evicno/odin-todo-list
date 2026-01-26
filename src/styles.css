@@ -213,6 +213,13 @@ h3:hover {
     padding-bottom: 2px;
 }
 
+.task-item[data-active="false"] {
+    opacity: 0.6;
+}
+
+.task-item[data-active="false"] h3 {
+    text-decoration: line-through;
+}
 .task-item p {
     align-self: baseline;
     grid-column: 1 / 4;
@@ -271,4 +278,25 @@ h3:hover {
 .add h2,
 .add h2 {
     font-size: 20px;
+}
+
+dialog {
+    padding: 20px;
+    border-radius: 10px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.task-buttons,
+.project-buttons {
+    align-self: end;
+    border-radius: 5px;
+}
+
+dialog::backdrop {
+    backdrop-filter: blur(2px);
 }

@@ -41,11 +41,10 @@ export const todoManager =(() => {
         }
     }
 
-    // Add task and add it to the project called (default: inbox)
-    function addTask (title, dueDate, project=inbox) {
-        let newTask = task(title, dueDate);
+    function addTask(taskData) {
+        const newTask = task(taskData);
+        const project = newTask.getProject();
         project.addTask(newTask);
-        return newTask;
     }
 
     function deleteTask(task) {
