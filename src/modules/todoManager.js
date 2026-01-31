@@ -1,13 +1,16 @@
 import { task } from "./task.js";
 import { project } from "./project.js";
+import { storageManager } from "./storageManager";
 
 export const todoManager =(() => { 
     let projectList = [];
-    const inbox = addProject("inbox");   
-    let currentProject = inbox;
+    projectList = storageManager.initProjectList();
+    let currentProject = findProjectById(storageManager.getCurrentProjectId());
+    storageManager.setCurrentProjectId(currentProject.getId());
 
-    function initApp() {
-
+    function setData() {
+        storageManager.setProjectListData(projectList);
+        storageManager.setCurrentProjectId(currentProject.getId());
     }
 
     const getCurrentProject = () => {
@@ -16,12 +19,14 @@ export const todoManager =(() => {
 
     const setCurrentProjectById = (id) => {
         currentProject = findProjectById(id);
+        storageManager.setCurrentProjectId(id);
     }
 
     // Create a project and add it to projectList
     function addProject(name) {
         const newProject = project(name);
         projectList.push(newProject);
+        storageManager.setProjectListData(projectList);
         return newProject;
     }
 
@@ -38,6 +43,7 @@ export const todoManager =(() => {
         const index = projectList.indexOf(project);
         if (index != -1) {
             projectList.splice(index, 1);
+            setData();
         }
     }
 
@@ -45,13 +51,21 @@ export const todoManager =(() => {
         const newTask = task(taskData);
         const project = newTask.getProject();
         project.addTask(newTask);
+        currentProject = findProjectById(storageManager.getCurrentProjectId());
+        setData();
     }
 
     function deleteTask(task) {
         const index = currentProject.getTasks().indexOf(task);
         if (index != -1) {
             currentProject.getTasks().splice(index, 1);
+            setData();
         }
+    }
+
+    function switchCheck(task) {
+        task.switchCheck();
+        setData();
     }
 
     // Find project by id and return the object
@@ -63,10 +77,11 @@ export const todoManager =(() => {
 
 
     return {
+        //initApp,
         getCurrentProject, setCurrentProjectById,
         addProject, addTask,
         getInbox, getProjectList,
-        deleteProject, deleteTask,
+        deleteProject, deleteTask, switchCheck,
         findProjectById
     }
 })();

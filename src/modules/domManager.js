@@ -73,7 +73,7 @@ export function renderLayout() {
     const projectForm = document.querySelector("#project-dialog form");
     projectForm.addEventListener("submit", () => {
         const name = document.getElementById("name").value;
-        todoManager.addProject(name);
+        todoManager.addProject({name: name});
         renderProjects();
     })
 
@@ -240,7 +240,7 @@ function createTaskItem(task) {
 
     // Event listeners to check/uncheck and delete task
     checkBox.addEventListener("click", () => {
-        task.switchCheck();
+        todoManager.switchCheck(task);
         checkBox.src = task.getCheck() ? checkedBoxImg : checkBoxImg;
         t.dataset.active = task.getCheck() ? false : true;
         renderTasks();

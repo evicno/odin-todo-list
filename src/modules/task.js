@@ -6,6 +6,8 @@ function task({ title,
                 priority = "low", 
                 check = false,
                 id = crypto.randomUUID() }) {
+    
+    let isChecked = check;
 
     const getTitle = () => {
         return title;
@@ -36,11 +38,11 @@ function task({ title,
     }
 
     const getCheck = () => {
-        return check;
+        return isChecked;
     }
 
     const switchCheck = () => {
-        check = !check;
+        isChecked = !isChecked;
     }
 
     const getId = () => {
@@ -51,6 +53,10 @@ function task({ title,
         return project;
     }
 
+    const getData = () => {
+        return  { title, description, dueDate, project, priority, check: isChecked, id };
+    }
+
     return {
         getTitle, setTitle,
         getDescription, setDescription,
@@ -58,7 +64,8 @@ function task({ title,
         getPriority,
         getProject,
         getCheck, switchCheck,
-        getId
+        getId,
+        getData
     }
 }
 

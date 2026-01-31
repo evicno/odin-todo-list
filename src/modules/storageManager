@@ -1,2 +1,48 @@
+import { project } from "./project.js";
 
+export const storageManager = (() => {
 
+    function initProjectList() {
+        const projectListData = localStorage.getItem("projectList");
+        if (!projectListData) {
+            const inbox = project({name: "inbox"});
+            let projectList = [];
+            projectList.push(inbox);
+            setProjectListData(projectList);
+            setCurrentProjectId(inbox.getId());
+        }
+        return getProjectListData();
+    }
+
+    const getCurrentProjectId = () => {
+        const currentProjectId = JSON.parse(localStorage.getItem("currentProjectId"));
+        if (currentProjectId) {
+            return currentProjectId;
+        }
+    }
+
+    const setCurrentProjectId = (id) => {
+        localStorage.setItem("currentProjectId", JSON.stringify(id));
+    }
+
+    const getProjectListData = () => {
+        const projectListData = JSON.parse(localStorage.getItem("projectList"));
+        if (projectListData) {
+            const newList =  projectListData.map(p => project(p));
+            return newList;
+        }
+    }
+
+    const setProjectListData = (newList) => {
+        const newListData = JSON.stringify(newList.map(project => project.getData()
+        ));
+        localStorage.setItem("projectList", newListData);
+    }
+
+    return { 
+        // initStorage,
+        initProjectList,
+        getCurrentProjectId, setCurrentProjectId,
+        getProjectListData, setProjectListData
+    }
+})()

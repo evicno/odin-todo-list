@@ -1,8 +1,11 @@
+import { task } from "./task";
 
+function project( { name, 
+                    tasks: rawTasks = [],
+                    id = (name === "inbox") ? "inbox" : crypto.randomUUID()
+                } ) {
 
-function project(name) {
-    let tasks = [];
-    const id = (name === "inbox") ? "inbox" : crypto.randomUUID();
+    let livingTasks = rawTasks.map(t => task(t));
 
     const getId = () => {
         return id;
@@ -17,17 +20,23 @@ function project(name) {
     }
 
     const getTasks = () => {
-        return tasks;
+        return livingTasks;
     }
 
     const addTask = (task) => {
-        tasks.push(task);
+        livingTasks.push(task);
+    }
+
+    const getData = () => {
+        const tasksData = livingTasks.map( task => task.getData());
+        return { name, tasks: tasksData, id };
     }
 
     return {
         getId,
         getName, setName,
-        getTasks, addTask
+        getTasks, addTask,
+        getData
     }
 }
 
