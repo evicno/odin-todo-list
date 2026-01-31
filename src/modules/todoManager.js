@@ -3,11 +3,14 @@ import { project } from "./project.js";
 import { storageManager } from "./storageManager";
 
 export const todoManager =(() => { 
+
+    // Initialize storage
     let projectList = [];
     projectList = storageManager.initProjectList();
     let currentProject = findProjectById(storageManager.getCurrentProjectId());
     storageManager.setCurrentProjectId(currentProject.getId());
 
+    // Save data to localStorage
     function setData() {
         storageManager.setProjectListData(projectList);
         storageManager.setCurrentProjectId(currentProject.getId());
@@ -77,7 +80,6 @@ export const todoManager =(() => {
 
 
     return {
-        //initApp,
         getCurrentProject, setCurrentProjectById,
         addProject, addTask,
         getInbox, getProjectList,
