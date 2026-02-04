@@ -81,10 +81,8 @@ export function renderLayout() {
     const taskForm = document.querySelector("#task-dialog form");
     taskForm.addEventListener("submit", () => {
         const title = document.getElementById("title").value;
-        const projectId = document.getElementById("project-linked").value;
-        const project = todoManager.findProjectById(projectId);
+        const project = todoManager.getCurrentProject();
         
-
         const description = document.getElementById("description").value;
         const dueDate = document.getElementById("due-date").value;
         const priority = document.querySelector("input[name = 'priority']:checked").value;
@@ -98,6 +96,35 @@ export function renderLayout() {
         todoManager.addTask(newTask);
         renderTasks();
     })
+
+    const editForm = document.querySelector("#edit-dialog form");
+    editForm.addEventListener("submit", () => {
+        // Delete the task to edit
+        const currentTaskId = editForm.getAttribute("id");
+        console.log(currentTaskId);
+        const currentTask = todoManager.findTaskById(currentTaskId);
+        console.log(currentTask.getTitle());
+        todoManager.deleteTask(currentTask);
+
+        // Create a new task with edited data
+        const title = document.getElementById("edit-title").value;
+        const project = todoManager.getCurrentProject();
+        
+        const description = document.getElementById("edit-description").value;
+        const dueDate = document.getElementById("edit-due-date").value;
+        const priority = document.querySelector("input[name = 'edit-priority']:checked").value;
+        const newTask = {
+            title,
+            description,
+            dueDate,
+            project,
+            priority
+        }
+
+        todoManager.addTask(newTask);
+        renderTasks();
+    })
+
 }
 
 export function renderApp() {
@@ -238,6 +265,11 @@ function createTaskItem(task) {
     deleteTaskButton.textContent = "X";
     t.appendChild(deleteTaskButton);
 
+    // Event listener to see details/edit task
+    title.addEventListener("click", () => {
+        editTaskDialog(task);
+    })
+
     // Event listeners to check/uncheck and delete task
     checkBox.addEventListener("click", () => {
         todoManager.switchCheck(task);
@@ -292,9 +324,6 @@ function openTaskDialog() {
     const taskDialog = document.querySelector("#task-dialog");
     const taskForm = document.querySelector("#task-dialog form");
 
-    // Actualise projects options in select
-    renderProjectOptions();
-
     //Set the minimum due date to today
     const date = document.querySelector("#due-date");
     const today = format(new Date(), "yyyy-MM-dd");
@@ -304,21 +333,49 @@ function openTaskDialog() {
     taskDialog.showModal();
 }
 
-function renderProjectOptions() {
-    const projectList = todoManager.getProjectList();
-    const select = document.querySelector("#project-linked");
-    const inboxOption = document.querySelector("#inbox-option");
+function editTaskDialog(task) {
+    const editDialog = document.querySelector("#edit-dialog");
+    const taskForm = document.querySelector("#edit-dialog form");
 
-    select.replaceChildren(inboxOption);
+    taskForm.reset();
+    taskForm.setAttribute("id", task.getId());
+    console.log(task.getId());
 
-    for (const project of projectList) {
-        if (project.getId() != "inbox") {
-            const option = document.createElement("option");
-            option.value = project.getId();
-            option.textContent = project.getName();
-            select.appendChild(option);
-        }
-    }
+    // Fill form with original data of task
+    const title = document.querySelector("#edit-title");
+    title.defaultValue = task.getTitle();
+    console.log(task.getTitle());
+
+    const description = document.querySelector("#edit-description");
+    description.textContent = task.getDescription();
+
+    const date = document.querySelector("#edit-due-date");
+    const today = format(new Date(), "yyyy-MM-dd");
+    date.min = today;
+    date.defaultValue = task.getDueDate();
+
+    const priorityValue = task.getPriority();
+    const priority = document.getElementById("edit-" + priorityValue);
+    priority.checked = true;
+
+
+    editDialog.showModal();
 }
 
 
+function getTaskDataFromForm() {
+        const title = document.getElementById("title").value;
+        const project = todoManager.getCurrentProject();
+        
+        const description = document.getElementById("description").value;
+        const dueDate = document.getElementById("due-date").value;
+        const priority = document.querySelector("input[name = 'priority']:checked").value;
+        const newTask = {
+            title,
+            description,
+            dueDate,
+            project,
+            priority
+        }
+        return newTask;
+}

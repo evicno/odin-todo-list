@@ -1,6 +1,6 @@
 import { task } from "./task.js";
 import { project } from "./project.js";
-import { storageManager } from "./storageManager";
+import { storageManager } from "./storageManager.js";
 
 export const todoManager =(() => { 
 
@@ -78,12 +78,18 @@ export const todoManager =(() => {
         return projectFound;
     }
 
+    // Find task by id in current project
+    function findTaskById(id) {
+        let taskFound = getCurrentProject().getTasks().find((el) => {
+            return el.getId() == id });
+        return taskFound;
+    }
 
     return {
         getCurrentProject, setCurrentProjectById,
         addProject, addTask,
         getInbox, getProjectList,
         deleteProject, deleteTask, switchCheck,
-        findProjectById
+        findProjectById, findTaskById
     }
 })();
